@@ -1,0 +1,23 @@
+# Try running:
+#
+# ansible-playbook -i inventory example_1.2.yaml
+#
+---
+- name: Examine the bomb disposal training dummy
+  hosts: bomb_disposal_training_dummy
+
+  tasks:
+    - name: Set the wires available on the dummy
+      ansible.builtin.set_fact:
+        dummy_wires:
+          - yellow
+          - red
+          - green
+          - blue
+
+    - name: Show the dummy's configuration
+      ansible.builtin.debug:
+        msg: "The dummy has the following wires: {{ dummy_wires }}"
+
+    # TODO: Write a task to display the "timer_type" of the dummy
+    

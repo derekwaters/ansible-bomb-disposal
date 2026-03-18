@@ -1,0 +1,1 @@
+bomb_disposal_training_dummy ansible_connection=local timer_type=digital

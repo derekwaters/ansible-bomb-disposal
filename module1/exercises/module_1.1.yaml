@@ -1,0 +1,20 @@
+# Try running:
+#
+# ansible-playbook -i inventory example_1.1.yaml
+#
+# ansible-playbook -i inventory -e dummy_wires="No wires" example_1.1.yaml
+#
+---
+- name: Examine the bomb disposal training dummy
+  hosts: bomb_disposal_training_dummy
+  vars:
+    dummy_wires:
+      - yellow
+      - red
+      - green
+      - blue
+
+  tasks:
+    - name: Show the dummy's configuration
+      ansible.builtin.debug:
+        msg: "The dummy has the following wires: {{ dummy_wires }}"
