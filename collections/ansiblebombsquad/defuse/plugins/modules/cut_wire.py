@@ -37,6 +37,7 @@ msg:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils import get_bomb, update_bomb
 
 def main():
     module_args = dict(
@@ -56,11 +57,21 @@ def main():
         msg = ''
     )
 
-    # Do something here with the status
-    result.change = True
-    result.msg = f"Cut the {colour} wire of the {name} bomb."
+    bomb = get_bomb(name)
+    if bomb is None:
+        module.fail_json(msg=f"Failed to find bomb details for bomb {name}", **result)
 
-    
+    if colour in bomb.wires:
+        current_state = bomb.wires[colour]
+        if current_state:
+            # Already cut
+            result.change = False
+            result.msh = f"The {colour} wire of the {name} bomb had already been cut."
+        else:
+            result.change = True
+            result.msg = f"Cut the {colour} wire of the {name} bomb."
+            bomb.wires[colour] = True
+            update_bomb(bomb)
 
     module.exit_json(**result)
 
