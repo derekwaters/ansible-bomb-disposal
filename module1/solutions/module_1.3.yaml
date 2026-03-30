@@ -9,10 +9,10 @@
   tasks:
     - name: Get the state of the dummy
       ansible.builtin.include_role:
-        name: ansiblebombsquad.defuse.get_dummy_state
+        name: ansiblebombsquad.defuse.get_bomb_state
       vars:
         bomb_name: module_1.3
         
     - name: Show the dummy's state
       ansible.builtin.debug:
-        var: dummy_state
+        var: bomb_state

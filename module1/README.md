@@ -12,7 +12,7 @@
 
     1. The basics of a playbook
     2. Modules and debug
-    3. Using Roles and Collections
+    3. Using Roles, Modules and Collections
     4. Templates and Vars
     5. Conditionals
     6. Loops

@@ -1,0 +1,16 @@
+galaxy_info:
+  role_name: get_bomb_state
+  author: Derek Waters
+  description: An Ansible role to retrieve bomb data from the bomb disposal robot system
+  company: Red Hat
+
+  license: GPL-3.0-or-later
+
+  min_ansible_version: 2.1
+
+
+  galaxy_tags:
+    - bomb
+    - disposal
+
+dependencies: []

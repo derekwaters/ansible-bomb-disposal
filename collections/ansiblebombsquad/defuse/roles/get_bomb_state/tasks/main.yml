@@ -1,0 +1,14 @@
+---
+- name: Ensure that the bomb name is set
+  ansible.builtin.assert:
+    that:
+      bomb_name is defined
+
+- name: Retrieve the bomb details
+  ansiblebombsquad.defuse.get_bomb_state:
+    name: "{{ bomb_name }}"
+  register: __bomb_state
+
+- name: Set the state value for the role caller
+  ansible.builtin.set_fact:
+    bomb_state: "{{ __bomb_state }}"

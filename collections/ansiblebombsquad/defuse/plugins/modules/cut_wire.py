@@ -20,7 +20,7 @@ options:
 
 EXAMPLES = r'''
 - name: Cut the blue wire on the BIG bomb
-  ansiblebombsquad.defus.cut_wire:
+  ansiblebombsquad.defuse.cut_wire:
     name: BIG
     colour: blue
 '''
@@ -66,12 +66,14 @@ def main():
         if current_state:
             # Already cut
             result.change = False
-            result.msh = f"The {colour} wire of the {name} bomb had already been cut."
+            result.msg = f"The {colour} wire of the {name} bomb had already been cut."
         else:
             result.change = True
             result.msg = f"Cut the {colour} wire of the {name} bomb."
             bomb.wires[colour] = True
             update_bomb(bomb)
+    else:
+        module.fail_json(msg=f"Failed to find {colour} wire in bomb {name}", **result)
 
     module.exit_json(**result)
 
