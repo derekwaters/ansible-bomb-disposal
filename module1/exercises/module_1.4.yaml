@@ -1,0 +1,35 @@
+# Try running:
+#
+# ansible-playbook -i inventory module_1.4.yaml
+#
+---
+- name: Examine the bomb disposal training dummy
+  hosts: bomb_disposal_training_dummy
+
+  tasks:
+    - name: Get the state of the dummy
+      ansible.builtin.include_role:
+        name: ansiblebombsquad.defuse.get_bomb_state
+      vars:
+        bomb_name: dummy
+        
+    - name: Show the dummy's state
+      ansible.builtin.debug:
+        var: bomb_state
+
+    - name: Set a variable called '__volume_knob' for the volume knob data
+      # Use the ansible.builtin.set_fact module to set a variable
+      # named __volume_knob to the state data of the volume knob.
+      # NOTE: Using two underscores __ on your var name is a convention
+      # for "internal" vars.
+
+    - name: Debug the knobs variable
+      ansible.builtin.debug:
+        var: __volume_knob
+
+    - name: Display a message showing the range of the volume knob
+      # Use the ansible.builtin.debug module to write out a message
+      # showing the range of values the volume knob can be set to.
+      # The message should be formatted something like the following:
+      #
+      # The Volume knob ranges from 100 to 1000

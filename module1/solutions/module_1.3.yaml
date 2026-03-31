@@ -1,6 +1,6 @@
 # Try running:
 #
-# ansible-playbook -i inventory example_1.3.yaml
+# ansible-playbook -i inventory module_1.3.yaml
 #
 ---
 - name: Examine the bomb disposal training dummy

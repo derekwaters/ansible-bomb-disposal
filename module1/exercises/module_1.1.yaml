@@ -1,8 +1,8 @@
 # Try running:
 #
-# ansible-playbook -i inventory example_1.1.yaml
+# ansible-playbook -i inventory module_1.1.yaml
 #
-# ansible-playbook -i inventory -e dummy_wires="No wires" example_1.1.yaml
+# ansible-playbook -i inventory -e dummy_wires="No wires" module_1.1.yaml
 #
 ---
 - name: Examine the bomb disposal training dummy

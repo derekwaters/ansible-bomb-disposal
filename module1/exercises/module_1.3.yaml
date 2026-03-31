@@ -1,0 +1,18 @@
+# Try running:
+#
+# ansible-playbook -i inventory module_1.3.yaml
+#
+---
+- name: Examine the bomb disposal training dummy
+  hosts: bomb_disposal_training_dummy
+
+  tasks:
+    - name: Get the state of the dummy
+      # Use the ansiblebombsquad.defuse collection to get the state
+      # of a bomb named 'dummy'. Check out the documentation for the
+      # collection to work out the role to use and the parameters
+      # that need to be passed in and out.
+        
+    - name: Show the dummy's state
+      # Use the ansible.builtin.debug module to write out the state
+      # of the bomb you retrieve from the role.
