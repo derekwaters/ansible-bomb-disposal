@@ -42,7 +42,7 @@ msg:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils import get_bomb, update_bomb
+from ..module_utils.bomb_simulator import get_bomb, update_bomb
 
 def main():
     module_args = dict(

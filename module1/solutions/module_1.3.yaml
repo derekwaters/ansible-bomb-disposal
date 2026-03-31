@@ -11,7 +11,7 @@
       ansible.builtin.include_role:
         name: ansiblebombsquad.defuse.get_bomb_state
       vars:
-        bomb_name: module_1.3
+        bomb_name: dummy
         
     - name: Show the dummy's state
       ansible.builtin.debug:

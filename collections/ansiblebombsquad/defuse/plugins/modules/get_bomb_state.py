@@ -28,7 +28,7 @@ state:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils import get_bomb
+from ..module_utils.bomb_simulator import get_bomb
 
 def main():
     module_args = dict(
@@ -41,17 +41,11 @@ def main():
 
     name = module.params['name']
 
-    result = dict(
-        state = dict()
-    )
-
     bomb = get_bomb(name)
     if bomb is None:
-        module.fail_json(msg=f"Failed to find bomb details for bomb {name}", **result)
+        module.fail_json(msg=f"Failed to find bomb details for bomb {name}")
 
-    result.state = bomb
-
-    module.exit_json(**result)
+    module.exit_json(state=bomb)
 
 if __name__ == '__main__':
     main()

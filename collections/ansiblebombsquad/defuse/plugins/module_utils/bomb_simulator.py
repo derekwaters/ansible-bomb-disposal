@@ -1,7 +1,7 @@
 import os
 import json
 
-DEF_FILE_NAME = "/tmp/bombs.json"
+DEF_FILE_NAME: str = "/tmp/bombs.json"
 
 def get_bomb(name):
     defs = get_bombs_definition()
@@ -49,7 +49,7 @@ def default_bombs_definition():
                     max = 5,
                     current = 3
                 )
-            )
+            ),
             timer_type = 'gold watch'
         )
     )
