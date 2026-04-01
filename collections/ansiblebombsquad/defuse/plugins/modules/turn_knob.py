@@ -8,7 +8,7 @@ description:
     - Ensure that one of the knobs on a bomb is turned to a specific value
 version_added: "1.0.0"
 options:
-    name:
+    bomb_name:
         description: Name of the bomb
         required: true
         type: str
@@ -25,7 +25,7 @@ options:
 EXAMPLES = r'''
 - name: Turn the Volume knob on the BIG bomb to 6
   ansiblebombsquad.defuse.turn_knob:
-    name: BIG
+    bomb_name: BIG
     knob: Volume
     setting: 6
 '''
@@ -46,7 +46,7 @@ from ..module_utils.bomb_simulator import get_bomb, update_bomb
 
 def main():
     module_args = dict(
-        name = dict(type = 'str', required = True),
+        bomb_name = dict(type = 'str', required = True),
         knob = dict(type = 'str', required = True),
         setting = dict(type = 'integer', required = True)
     )
@@ -55,7 +55,7 @@ def main():
         supports_check_mode = True
     )
 
-    name = module.params['name']
+    name = module.params['bomb_name']
     knob = module.params['knob']
     setting = module.params['setting']
 
@@ -66,23 +66,23 @@ def main():
 
     bomb = get_bomb(name)
     if bomb is None:
-        module.fail_json(msg=f"Failed to find bomb details for bomb {name}", **result)
+        module.fail_json(msg=f"Failed to find bomb details for bomb {name}")
 
-    if knob in bomb.knobs:
-        current_state = bomb.knobs[knob]
+    if knob in bomb['knobs']:
+        current_state = bomb['knobs'][knob]
         if current_state.current == setting:
             # Already set
-            result.change = False
-            result.msg = f"The {knob} knob of the {name} bomb was already set to {setting}."
+            result['changed'] = False
+            result['msg'] = f"The {knob} knob of the {name} bomb was already set to {setting}."
         else if setting >= current_state.min and setting <= current_state.max:
-            result.change = True
-            result.msg = f"Set the {knob} knob of the {name} bomb to {setting}."
-            bomb.knobs[knob].current = setting
-            update_bomb(bomb)
+            result['changed'] = True
+            result['msg'] = f"Set the {knob} knob of the {name} bomb to {setting}."
+            bomb['knobs'][knob].current = setting
+            update_bomb(name, bomb)
         else:
-            module.fail_json(msg=f"Failed to set {knob} knob in bomb {name} to {setting} as the value is out of range", **result)
+            module.fail_json(msg=f"Failed to set {knob} knob in bomb {name} to {setting} as the value is out of range")
     else:
-        module.fail_json(msg=f"Failed to find {knob} knob in bomb {name}", **result)
+        module.fail_json(msg=f"Failed to find {knob} knob in bomb {name}")
 
     module.exit_json(**result)
 

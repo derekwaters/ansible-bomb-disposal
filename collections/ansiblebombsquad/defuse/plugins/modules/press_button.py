@@ -8,7 +8,7 @@ description:
     - Ensure that one of the buttons on a bomb is pressed
 version_added: "1.0.0"
 options:
-    name:
+    bomb_name:
         description: Name of the bomb
         required: true
         type: str
@@ -21,7 +21,7 @@ options:
 EXAMPLES = r'''
 - name: Press the CLEAR button on the BIG bomb
   ansiblebombsquad.defuse.press_button:
-    name: BIG
+    bomb_name: BIG
     button: CLEAR
 '''
 
@@ -41,7 +41,7 @@ from ..module_utils.bomb_simulator import get_bomb, update_bomb
 
 def main():
     module_args = dict(
-        name = dict(type = 'str', required = True),
+        bomb_name = dict(type = 'str', required = True),
         button = dict(type = 'str', required = True)
     )
     module = AnsibleModule(
@@ -49,7 +49,7 @@ def main():
         supports_check_mode = True
     )
 
-    name = module.params['name']
+    name = module.params['bomb_name']
     button = module.params['button']
 
     result = dict(
@@ -61,11 +61,11 @@ def main():
     if bomb is None:
         module.fail_json(msg=f"Failed to find bomb details for bomb {name}", **result)
 
-    if button in bomb.buttons:
-        result.change = True
-        result.msg = f"Pressed the {button} button of the {name} bomb."
+    if button in bomb['buttons']:
+        result['changed'] = True
+        result['msg'] = f"Pressed the {button} button of the {name} bomb."
     else:
-        module.fail_json(msg=f"Failed to find {button} button in bomb {name}", **result)
+        module.fail_json(msg=f"Failed to find {button} button in bomb {name}")
 
     module.exit_json(**result)
 

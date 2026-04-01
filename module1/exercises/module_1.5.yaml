@@ -21,32 +21,16 @@
       # Use the ansiblebombsquad.defuse.press_button module to press
       # the 'reset' button, but only if the current value of the tone
       # knob is 4 or less
-      ansiblebombsquad.defuse.press_button:
-        bomb_name: dummy
-        button: reset
-      when:
-        - bomb_state.state.knobs.tone.current <= 4
 
     - name: Cut the red wire if the blue wire is already cut
       # Use the ansiblebombsquad.defuse.cut_wire module to cut
       # the 'red' wire, but only if the 'blue' wire is already
       # cut (wire's state is True)
-      ansiblebombsquad.defuse.cut_wire:
-        bomb_name: dummy
-        colour: red
-      when:
-        - bomb_state.state.wires.blue == True
         
-    - name: Cut the blue wire if the volume is set to 1 and the timer is a gold watch
+    - name: Cut the blue wire if the volume is set to 1 AND the timer is a gold watch
       # Use the ansiblebombsquad.defuse.cut_wire module to cut
       # the 'blue' wire, but only if the current value of the volume
       # knob is 1 and the timer_type is 'gold watch'
-      ansiblebombsquad.defuse.cut_wire:
-        bomb_name: dummy
-        colour: blue
-      when:
-        - bomb_state.state.knobs.volume.current == 1
-        - bomb_state.state.timer_type == "gold watch"
 
     - name: Get the final state of the dummy
       ansible.builtin.include_role:
@@ -61,13 +45,7 @@
     - name: Assert that the blue wire has been cut
       # Use the ansible.builtin.assert module to check that the new
       # state of the bomb indicates that the blue wire is cut
-      ansible.builtin.assert:
-        that:
-          - bomb_state.state.wires.blue == True
 
     - name: Assert that the red wire has not been cut
       # Use the ansible.builtin.assert module to check that the new
       # state of the bomb indicates that the red wire is not cut
-      ansible.builtin.assert:
-        that:
-          - bomb_state.state.wires.red == False

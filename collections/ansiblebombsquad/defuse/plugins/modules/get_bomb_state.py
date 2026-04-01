@@ -8,7 +8,7 @@ description:
     - Get the state of a bomb
 version_added: "1.0.0"
 options:
-    name:
+    bomb_name:
         description: Name of the bomb
         required: true
         type: str
@@ -17,7 +17,7 @@ options:
 EXAMPLES = r'''
 - name: Get the state of the BIG bomb
   ansiblebombsquad.defuse.get_bomb_state:
-    name: BIG
+    bomb_name: BIG
 '''
 
 RETURN = r'''
@@ -32,14 +32,14 @@ from ..module_utils.bomb_simulator import get_bomb
 
 def main():
     module_args = dict(
-        name = dict(type = 'str', required = True)
+        bomb_name = dict(type = 'str', required = True)
     )
     module = AnsibleModule(
         argument_spec = module_args,
         supports_check_mode = True
     )
 
-    name = module.params['name']
+    name = module.params['bomb_name']
 
     bomb = get_bomb(name)
     if bomb is None:

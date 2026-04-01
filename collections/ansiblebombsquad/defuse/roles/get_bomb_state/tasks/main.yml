@@ -6,7 +6,7 @@
 
 - name: Retrieve the bomb details
   ansiblebombsquad.defuse.get_bomb_state:
-    name: "{{ bomb_name }}"
+    bomb_name: "{{ bomb_name }}"
   register: __bomb_state
 
 - name: Set the state value for the role caller
