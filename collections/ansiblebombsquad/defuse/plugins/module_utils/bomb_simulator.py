@@ -9,6 +9,15 @@ def get_bomb(name):
         return defs[name]
     return None
 
+def reset_bomb(name):
+    defaults = default_bombs_definition()
+    current = get_bombs_definition()
+    if name in current and name in defaults:
+        current[name] = defaults[name]
+        update_bomb(name, defaults[name])
+        return current[name]
+    return None
+
 def update_bomb(name, bomb_defs):
     defs = get_bombs_definition()
     defs[name] = bomb_defs

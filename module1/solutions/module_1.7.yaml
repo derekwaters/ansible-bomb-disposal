@@ -1,0 +1,51 @@
+# Try running:
+#
+# ansible-playbook -i inventory module_1.7.yaml
+#
+# then re-running and compare the output
+#
+---
+- name: Examine the bomb disposal training dummy
+  hosts: bomb_disposal_training_dummy
+
+  tasks:
+    - name: Reset the dummy bomb state
+      ansible.bombsquad.defuse.reset_bomb_state:
+        bomb_name: dummy
+
+    - name: Get the state of the dummy
+      ansible.builtin.include_role:
+        name: ansiblebombsquad.defuse.get_bomb_state
+      vars:
+        bomb_name: dummy
+        
+    - name: Show the dummy's state
+      ansible.builtin.debug:
+        var: bomb_state
+
+    - name: Cut all of the wires on the bomb
+      # Use the ansiblebombsquad.defuse.cut_wire module to cut each
+      # wire in a loop.
+      # https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_loops.html#iterating-over-a-list-of-hashes
+      ansiblebombsquad.defuse.cut_wire:
+        bomb_name: dummy
+        colour: "{{ item.key }}"
+      loop: "{{ bomb_state.state.wires | dict2items }}"
+
+    - name: Get the final state of the dummy
+      ansible.builtin.include_role:
+        name: ansiblebombsquad.defuse.get_bomb_state
+      vars:
+        bomb_name: dummy
+        
+    - name: Show the dummy's state
+      ansible.builtin.debug:
+        var: bomb_state
+
+    - name: Assert that each of the wires has been cut
+      # Use the ansible.builtin.assert module to check that the each
+      # wire has been cut in a loop
+      ansible.builtin.assert:
+        that:
+          - item.value == True
+      loop: "{{ bomb_state.state.wires | dict2items }}"
