@@ -11,7 +11,7 @@
     4. Templates and Vars
     5. Conditionals
     6. Loops
-    7. Idempotency
+    7. Idempotency (Also tags, and multiple plays in a playbook)
 
 2. Now Let's Work With The Team *(Code Reuse and Style)*
 

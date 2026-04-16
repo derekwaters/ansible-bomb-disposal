@@ -1,16 +1,22 @@
-# Try running:
+# Run:
+# 
+# ansible-playbook -i inventory --tags "reset" module_1.7.yaml
 #
-# ansible-playbook -i inventory module_1.6.yaml
+# Which will reset the bomb to "initial" state
+#
+# Then try running:
+#
+# ansible-playbook -i inventory --tags "test" module_1.7.yaml
+#
+# then re-running and compare the output
 #
 ---
+# Test Play
 - name: Examine the bomb disposal training dummy
   hosts: bomb_disposal_training_dummy
+  # Define tags for this play in the playbook here
 
   tasks:
-    - name: Reset the dummy bomb state
-      ansiblebombsquad.defuse.reset_bomb_state:
-        bomb_name: dummy
-
     - name: Get the state of the dummy
       ansible.builtin.include_role:
         name: ansiblebombsquad.defuse.get_bomb_state
@@ -25,6 +31,10 @@
       # Use the ansiblebombsquad.defuse.cut_wire module to cut each
       # wire in a loop.
       # https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_loops.html#iterating-over-a-list-of-hashes
+      ansiblebombsquad.defuse.cut_wire:
+        bomb_name: dummy
+        colour: "{{ item.key }}"
+      loop: "{{ bomb_state.state.wires | dict2items }}"
 
     - name: Get the final state of the dummy
       ansible.builtin.include_role:
@@ -39,3 +49,17 @@
     - name: Assert that each of the wires has been cut
       # Use the ansible.builtin.assert module to check that the each
       # wire has been cut in a loop
+      ansible.builtin.assert:
+        that:
+          - item.value == True
+      loop: "{{ bomb_state.state.wires | dict2items }}"
+
+# Reset Play
+- name: Reset the bomb disposal training dummy
+  hosts: bomb_disposal_training_dummy
+  # Define tags for this play in the playbook here
+
+  tasks:
+    - name: Reset the dummy bomb state
+      ansiblebombsquad.defuse.reset_bomb_state:
+        bomb_name: dummy

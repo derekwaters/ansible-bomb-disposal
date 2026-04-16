@@ -7,6 +7,10 @@
   hosts: bomb_disposal_training_dummy
 
   tasks:
+    - name: Reset the dummy bomb state
+      ansiblebombsquad.defuse.reset_bomb_state:
+        bomb_name: dummy
+
     - name: Get the state of the dummy
       ansible.builtin.include_role:
         name: ansiblebombsquad.defuse.get_bomb_state

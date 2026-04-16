@@ -1,18 +1,23 @@
-# Try running:
+# Run:
+# 
+# ansible-playbook -i inventory --tags "reset" module_1.7.yaml
 #
-# ansible-playbook -i inventory module_1.7.yaml
+# Which will reset the bomb to "initial" state
+#
+# Then try running:
+#
+# ansible-playbook -i inventory --tags "test" module_1.7.yaml
 #
 # then re-running and compare the output
 #
 ---
+# Test Play
 - name: Examine the bomb disposal training dummy
   hosts: bomb_disposal_training_dummy
+  # Define tags for this play in the playbook here
+  tags: test
 
   tasks:
-    - name: Reset the dummy bomb state
-      ansible.bombsquad.defuse.reset_bomb_state:
-        bomb_name: dummy
-
     - name: Get the state of the dummy
       ansible.builtin.include_role:
         name: ansiblebombsquad.defuse.get_bomb_state
@@ -49,3 +54,14 @@
         that:
           - item.value == True
       loop: "{{ bomb_state.state.wires | dict2items }}"
+
+# Reset Play
+- name: Reset the bomb disposal training dummy
+  hosts: bomb_disposal_training_dummy
+  # Define tags for this play in the playbook here
+  tags: reset
+
+  tasks:
+    - name: Reset the dummy bomb state
+      ansiblebombsquad.defuse.reset_bomb_state:
+        bomb_name: dummy
