@@ -16,4 +16,4 @@
     4. Templates and Vars
     5. Conditionals
     6. Loops
-    7. Idemopotency
+    7. Idemopotency (Also tags, and multiple plays in a playbook)
