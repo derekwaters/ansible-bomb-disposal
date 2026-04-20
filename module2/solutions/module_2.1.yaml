@@ -13,29 +13,32 @@
         bomb_name: tsar_bomba
 
     - name: Get the state of the bomb
-      include_role:
+      ansible.builtin.include_role:
         name: ansiblebombsquad.defuse.get_bomb_state
       vars:
         bomb_name: tsar_bomba
-        
+
     - name: Show the bomb's state
-      debug:
+      ansible.builtin.debug:
         var: bomb_state
 
     - name: Get the timer_type of the bomb as a var
-      set_fact:
-        _Timer_Type: "{{ bomb_state.state.timer_type }}"
+      ansible.builtin.set_fact:
+        _timer_type: "{{ bomb_state.state.timer_type }}"
 
     - name: Ensure bomb-defuser-bot-2000 configuration staging file is up to date
-      template:
+      ansible.builtin.template:
         src: templates/bomb-defuser-bot-2000.conf.j2
         dest: /tmp/defuser.conf.staging
+        mode: "0755"
       vars:
         bomb_name: tsar_bomba
 
     - name: Ensure the staging configuration is copied to the runtime configuration
       ansible.builtin.command: "cp /tmp/defuser.conf.staging /tmp/defuser.conf"
-      ignore_errors: true
+      register: _cp_result
+      failed_when: _cp_result.rc != 0
+      changed_when: _cp_result.rc == 0
       environment:
         BOMB_NAME: tsar_bomba
 
@@ -46,17 +49,17 @@
       loop: "{{ bomb_state.state.wires | dict2items }}"
 
     - name: Get the final state of the dummy
-      include_role:
+      ansible.builtin.include_role:
         name: ansiblebombsquad.defuse.get_bomb_state
       vars:
         bomb_name: tsar_bomba
-        
+
     - name: Show the dummy's state
-      debug:
+      ansible.builtin.debug:
         var: bomb_state
 
     - name: Assert that each of the wires has been cut
-      assert:
+      ansible.builtin.assert:
         that:
           - item.value == True
       loop: "{{ bomb_state.state.wires | dict2items }}"
