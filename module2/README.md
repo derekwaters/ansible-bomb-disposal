@@ -9,5 +9,16 @@
 
   You have a really good bomb-defusing colleague, but she's always busy and doesn't have time to work out what your code is doing. You need to make sure it's in an ansible-lint-compliant form that she can read easily.
 
-    2. AAP Deployment
-    3. Building a Role and Collection
+    2. Building a Role
+
+  OK, you've got a great playbook for defusing a bomb with an alarm clock timer. It'd be great to use all the time, but I don't
+  want you copying playbooks around where they could get out of sync when someone starts making bombs with a different coloured
+  wire. Can you make it a role?
+  
+    3. Building a Collection
+
+  Nice role, but it would good to package that up for the rest of the department. Can you create a collection with that role in it?
+
+    4. AAP Deployment
+
+  ansible-playbook on the command line is great, but we've got too many bomb reports now. Can you deploy your playbook into AAP?

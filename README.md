@@ -16,8 +16,8 @@
 2. Now Let's Work With The Team *(Code Reuse and Style)*
 
     1. Linting
-    2. AAP Deployment
-    3. Building a Role and Collection
+    2. Building a Role and Collection
+    3. AAP Deployment
 
 3. Too Slow! *(GitOps and Event-Driven Automation)*
 

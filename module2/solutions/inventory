@@ -1,1 +1,2 @@
 tsar_bomba ansible_connection=local
+bomb_robot ansible_connection=local
