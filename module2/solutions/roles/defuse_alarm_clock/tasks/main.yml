@@ -1,0 +1,23 @@
+---
+# To defuse the bomb, we need to:
+#  1) Turn the alarm_mode knob to "3"
+#  2) Cut the red and blue wires
+#  3) Press the "test_alarm" button
+- name: Ensure the alarm_mode knob is set to 3
+  ansiblebombsquad.defuse.turn_knob:
+    bomb_name: "{{ bomb_name }}"
+    knob: "alarm_mode"
+    setting: 3
+
+- name: Ensure the red and the blue wires on the bomb are cut
+  ansiblebombsquad.defuse.cut_wire:
+    bomb_name: "{{ bomb_name }}"
+    colour: "{{ item }}"
+  loop:
+    - red
+    - blue
+
+- name: Press the "test_alarm" button
+  ansiblebombsquad.defuse.press_button:
+    bomb_name: "{{ bomb_name }}"
+    button: "test_alarm"

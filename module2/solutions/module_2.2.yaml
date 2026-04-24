@@ -1,6 +1,6 @@
 # Try running:
 #
-# ansible-playbook -i inventory module_2.1.yaml
+# ansible-playbook -i inventory module_2.2.yaml
 #
 ---
 - name: Defuse a bomb with an "alarm clock" timer
@@ -18,7 +18,7 @@
       ansible.builtin.include_role:
         name: ansiblebombsquad.defuse.get_bomb_state
       vars:
-        bomb_name: "{{ _bomb_state }}"
+        bomb_name: "{{ _bomb_name }}"
 
     - name: Show the bomb's state
       ansible.builtin.debug:
@@ -31,30 +31,13 @@
     - name: Ensure that the timer is an alarm_clock
       ansible.builtin.assert:
         that:
-          - _timer_type == "alarm_clock"
+          - _timer_type == "alarm clock"
 
-    # To defuse the bomb, we need to:
-    #  1) Turn the alarm_mode knob to "3"
-    #  2) Cut the red and blue wires
-    #  3) Press the "test_alarm" button
-    - name: Ensure the alarm_mode knob is set to 3
-      ansiblebombsquad.defuse.turn_knob:
+    - name: Ensure an alarm clock bomb is defused
+      ansible.builtin.include_role:
+        name: defuse_alarm_clock
+      vars:
         bomb_name: "{{ _bomb_name }}"
-        knob: "alarm_mode"
-        setting: "3"
-
-    - name: Ensure the red and the blue wires on the bomb are cut
-      ansiblebombsquad.defuse.cut_wire:
-        bomb_name: "{{ _bomb_name }}"
-        colour: "{{ item.key }}"
-      loop:
-        - red
-        - blue
-
-    - name: Press the "test_alarm" button
-      ansiblebombsquad.defuse.press_button:
-        bomb_name: "{{ _bomb_name }}"
-        button: "test_alarm"
 
     - name: Get the final state of the bomb
       ansible.builtin.include_role:
@@ -64,4 +47,4 @@
 
     - name: Show the bomb's state
       ansible.builtin.debug:
-        var: "{{ _bomb_name }}"
+        var: bomb_state

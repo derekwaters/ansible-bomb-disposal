@@ -12,7 +12,7 @@ def get_bomb(name):
 def reset_bomb(name):
     defaults = default_bombs_definition()
     current = get_bombs_definition()
-    if name in current and name in defaults:
+    if name in defaults:
         current[name] = defaults[name]
         update_bomb(name, defaults[name])
         return current[name]
@@ -60,5 +60,43 @@ def default_bombs_definition():
                 )
             ),
             timer_type = 'gold watch'
+        ),
+        bartholemew_the_strangler = dict(
+            wires = dict(
+                red = False,
+                green = False,
+                blue = False
+            ),
+            buttons = dict(
+                test_alarm = False,
+                reset = False
+            ),
+            knobs = dict(
+                alarm_mode = dict(
+                    min = 1,
+                    max = 10,
+                    current = 5
+                )
+            ),
+            timer_type = 'alarm clock'
+        ),
+        tsar_bomba = dict(
+            wires = dict(
+                black = False,
+                grey = False,
+                white = False
+            ),
+            buttons = dict(
+                drop = False,
+                reset = False
+            ),
+            knobs = dict(
+                altitude = dict(
+                    min = 1,
+                    max = 100000,
+                    current = 15000
+                )
+            ),
+            timer_type = 'proximity'
         )
     )

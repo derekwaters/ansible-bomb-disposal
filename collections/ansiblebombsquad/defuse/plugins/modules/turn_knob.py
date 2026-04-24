@@ -48,7 +48,7 @@ def main():
     module_args = dict(
         bomb_name = dict(type = 'str', required = True),
         knob = dict(type = 'str', required = True),
-        setting = dict(type = 'integer', required = True)
+        setting = dict(type = 'int', required = True)
     )
     module = AnsibleModule(
         argument_spec = module_args,
@@ -70,14 +70,14 @@ def main():
 
     if knob in bomb['knobs']:
         current_state = bomb['knobs'][knob]
-        if current_state.current == setting:
+        if current_state['current'] == setting:
             # Already set
             result['changed'] = False
             result['msg'] = f"The {knob} knob of the {name} bomb was already set to {setting}."
-        else if setting >= current_state.min and setting <= current_state.max:
+        elif setting >= current_state['min'] and setting <= current_state['max']:
             result['changed'] = True
             result['msg'] = f"Set the {knob} knob of the {name} bomb to {setting}."
-            bomb['knobs'][knob].current = setting
+            bomb['knobs'][knob]['current'] = setting
             update_bomb(name, bomb)
         else:
             module.fail_json(msg=f"Failed to set {knob} knob in bomb {name} to {setting} as the value is out of range")

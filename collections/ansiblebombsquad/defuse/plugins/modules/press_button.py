@@ -64,6 +64,8 @@ def main():
     if button in bomb['buttons']:
         result['changed'] = True
         result['msg'] = f"Pressed the {button} button of the {name} bomb."
+        bomb['buttons'][button] = True
+        update_bomb(name, bomb)
     else:
         module.fail_json(msg=f"Failed to find {button} button in bomb {name}")
 

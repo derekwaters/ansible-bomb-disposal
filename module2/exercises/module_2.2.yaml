@@ -1,6 +1,6 @@
 # Try running:
 #
-# ansible-playbook -i inventory module_2.1.yaml
+# ansible-playbook -i inventory module_2.2.yaml
 #
 ---
 - name: Defuse a bomb with an "alarm clock" timer
@@ -18,7 +18,7 @@
       ansible.builtin.include_role:
         name: ansiblebombsquad.defuse.get_bomb_state
       vars:
-        bomb_name: "{{ _bomb_state }}"
+        bomb_name: "{{ _bomb_name }}"
 
     - name: Show the bomb's state
       ansible.builtin.debug:
@@ -31,7 +31,7 @@
     - name: Ensure that the timer is an alarm_clock
       ansible.builtin.assert:
         that:
-          - _timer_type == "alarm_clock"
+          - _timer_type == "alarm clock"
 
     # To defuse the bomb, we need to:
     #  1) Turn the alarm_mode knob to "3"
@@ -41,12 +41,12 @@
       ansiblebombsquad.defuse.turn_knob:
         bomb_name: "{{ _bomb_name }}"
         knob: "alarm_mode"
-        setting: "3"
+        setting: 3
 
     - name: Ensure the red and the blue wires on the bomb are cut
       ansiblebombsquad.defuse.cut_wire:
         bomb_name: "{{ _bomb_name }}"
-        colour: "{{ item.key }}"
+        colour: "{{ item }}"
       loop:
         - red
         - blue
@@ -64,4 +64,4 @@
 
     - name: Show the bomb's state
       ansible.builtin.debug:
-        var: "{{ _bomb_name }}"
+        var: bomb_state
